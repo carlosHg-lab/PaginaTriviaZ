@@ -39,6 +39,11 @@ export const apiRequest = async (
         headers,
         body: body !== null ? JSON.stringify(body) : null
     });
+    if (respuesta.status === 511) {
+    throw new Error(
+        "LocalTunnel rechazó la petición (511). Verifica la cabecera bypass-tunnel-reminder y que el túnel esté activo."
+    );
+}
 
     if (respuesta.status === 204) {
         return null;
