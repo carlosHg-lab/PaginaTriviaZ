@@ -3,7 +3,7 @@ import React from 'react';
 
 export default function Results() {
   return (
-    <section id="view-results" className="results results--hidden" aria-labelledby="results-heading">
+    <section id="view-results" className="results" aria-labelledby="results-heading">
       <header className="results__header">
         <span className="results__trophy" aria-hidden="true">🏆</span>
         <h2 id="results-heading" className="results__title">¡Partida Finalizada!</h2>
@@ -38,7 +38,12 @@ export default function Results() {
       </div>
 
       <footer className="results__footer">
-        <button type="button" id="btn-back-to-menu" className="results__button results__button--primary">
+        <button
+          type="button"
+          id="btn-back-to-menu"
+          className="results__button results__button--primary"
+          onClick={onBackToMenu}
+        >
           Volver al Menú Principal
         </button>
       </footer>

@@ -3,7 +3,7 @@ import React from 'react';
 
 export default function Practice() {
   return (
-    <section id="view-practice" className="practice practice--hidden" aria-labelledby="practice-heading">
+    <section id="view-practice" className="practice" aria-labelledby="practice-heading">
       <header className="practice__header">
         <h2 id="practice-heading" className="practice__title">Práctica de Preguntas Aleatorias</h2>
         <p className="practice__subtitle">

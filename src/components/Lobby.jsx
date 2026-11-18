@@ -1,13 +1,13 @@
 // src/components/Lobby.jsx
 import React from 'react';
 
-export default function Lobby() {
+export default function Lobby({ onStartMatch, onLeaveLobby }) {
   return (
-    <section id="view-lobby" className="lobby lobby--hidden" aria-labelledby="lobby-heading">
+    <section id="view-lobby" className="lobby" aria-labelledby="lobby-heading">
       <header className="lobby__header">
         <div className="lobby__room-badge">
           <span className="lobby__room-label">Código de Sala:</span>
-          <output id="lobby-room-code" className="lobby__room-code">------</output>
+          <output id="lobby-room-code" className="lobby__room-code">TRV-409</output>
         </div>
 
         <h2 id="lobby-heading" className="lobby__title">Sala de Espera</h2>
@@ -54,10 +54,20 @@ export default function Lobby() {
         </p>
 
         <div className="lobby__actions">
-          <button type="button" id="btn-start-match" className="lobby__button--start">
+          <button
+            type="button"
+            id="btn-start-match"
+            className="lobby__button--start"
+            onClick={onStartMatch}
+          >
             Iniciar Partida Ahora
           </button>
-          <button type="button" id="btn-leave-lobby" className="lobby__button--leave">
+          <button
+            type="button"
+            id="btn-leave-lobby"
+            className="lobby__button--leave"
+            onClick={onLeaveLobby}
+          >
             Salir de la Sala
           </button>
         </div>

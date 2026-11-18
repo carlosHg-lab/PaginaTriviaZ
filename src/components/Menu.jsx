@@ -1,7 +1,21 @@
 // src/components/Menu.jsx
-import React from 'react';
+import React, { useState } from 'react';
 
-export default function Menu() {
+export default function Menu({ playerName, onCreateMatch, onJoinMatch }) {
+  const [matchType, setMatchType] = useState('INDIVIDUAL');
+  const [hostName, setHostName] = useState(playerName || '');
+  const [guestName, setGuestName] = useState(playerName || '');
+
+  const handleCreateSubmit = (e) => {
+    e.preventDefault();
+    onCreateMatch(matchType);
+  };
+
+  const handleJoinSubmit = (e) => {
+    e.preventDefault();
+    onJoinMatch();
+  };
+
   return (
     <section id="view-menu" className="menu" aria-labelledby="menu-heading">
       <header className="menu__header">
@@ -16,7 +30,7 @@ export default function Menu() {
         <article className="menu__card menu__card--create">
           <h3 className="menu__card-title">Crear Nueva Partida</h3>
 
-          <form className="menu__form" id="form-create-match">
+          <form className="menu__form" id="form-create-match" onSubmit={handleCreateSubmit}>
             <div className="menu__field">
               <label htmlFor="host-name" className="menu__label">Tu Nombre (Anfitrión)</label>
               <input
@@ -25,6 +39,8 @@ export default function Menu() {
                 name="nombre"
                 className="menu__input"
                 placeholder="Ej. Carloz"
+                value={hostName}
+                onChange={(e) => setHostName(e.target.value)}
                 required
               />
             </div>
@@ -38,7 +54,8 @@ export default function Menu() {
                     name="tipo"
                     value="INDIVIDUAL"
                     className="menu__radio"
-                    defaultChecked
+                    checked={matchType === 'INDIVIDUAL'}
+                    onChange={(e) => setMatchType(e.target.value)}
                   />
                   <span className="menu__radio-text">Individual</span>
                 </label>
@@ -48,6 +65,8 @@ export default function Menu() {
                     name="tipo"
                     value="MULTIJUGADOR"
                     className="menu__radio"
+                    checked={matchType === 'MULTIJUGADOR'}
+                    onChange={(e) => setMatchType(e.target.value)}
                   />
                   <span className="menu__radio-text">Multijugador (2-8 jugadores)</span>
                 </label>
@@ -70,7 +89,9 @@ export default function Menu() {
 
             {/* Opciones exclusivas de Multijugador */}
             <fieldset
-              className="menu__fieldset menu__fieldset--multiplayer menu__multiplayer-options--disabled"
+              className={`menu__fieldset menu__fieldset--multiplayer ${
+                matchType === 'INDIVIDUAL' ? 'menu__multiplayer-options--disabled' : ''
+              }`}
               id="multiplayer-options"
             >
               <legend className="menu__legend">Ajustes Multijugador</legend>
@@ -117,7 +138,7 @@ export default function Menu() {
             Ingresa el código de la sala mientras esté en espera (máx. 8 jugadores).
           </p>
 
-          <form className="menu__form" id="form-join-match">
+          <form className="menu__form" id="form-join-match" onSubmit={handleJoinSubmit}>
             <div className="menu__field">
               <label htmlFor="join-room-id" className="menu__label">
                 Código de la Sala (ID Partida)
@@ -140,6 +161,8 @@ export default function Menu() {
                 name="nombre"
                 className="menu__input"
                 placeholder="Ej. Ana"
+                value={guestName}
+                onChange={(e) => setGuestName(e.target.value)}
                 required
               />
             </div>

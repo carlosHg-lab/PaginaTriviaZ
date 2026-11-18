@@ -3,7 +3,7 @@ import React from 'react';
 
 export default function AdminPanel() {
   return (
-    <section id="view-admin" className="admin admin--hidden" aria-labelledby="admin-heading">
+    <section id="view-admin" className="admin" aria-labelledby="admin-heading">
       <header className="admin__header">
         <h2 id="admin-heading" className="admin__title">Panel de Administración de Preguntas</h2>
 

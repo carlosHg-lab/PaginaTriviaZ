@@ -1,14 +1,13 @@
 // src/components/GameBoard.jsx
 import React from 'react';
 
-export default function GameBoard() {
+export default function GameBoard({ onFinishMatch }) {
   return (
     <section
       id="view-gameboard"
-      className="gameboard gameboard--hidden"
+      className="gameboard"
       aria-labelledby="gameboard-question-text"
     >
-      {/* Barra superior de estado y Termómetro de Tiempo */}
       <header className="gameboard__hud">
         <div className="gameboard__progress">
           <span className="gameboard__progress-label">Pregunta</span>
@@ -29,15 +28,12 @@ export default function GameBoard() {
         </div>
       </header>
 
-      {/* Barra de tiempo estilo termómetro (Verde a Rojo) */}
       <div className="gameboard__time-bar-container">
         <div id="game-time-bar" className="gameboard__time-bar"></div>
       </div>
 
       <div className="gameboard__layout">
-        {/* Área central de Pregunta con Animación de Mazo de Cartas */}
         <article className="gameboard__stage">
-          {/* Fila superior de cartas (Siluetas pendientes + Cartas respondidas en Verde/Rojo/Gris) */}
           <div className="gameboard__deck-container" aria-label="Progreso del mazo de cartas">
             <div className="gameboard__deck-slots" id="deck-slots-container"></div>
             <span className="gameboard__deck-label">
@@ -45,7 +41,6 @@ export default function GameBoard() {
             </span>
           </div>
 
-          {/* Envoltorio 3D para el giro y transición de la carta de pregunta */}
           <div className="gameboard__card-flipper" id="game-card-flipper">
             <header className="gameboard__question-header">
               <span className="gameboard__category" id="game-category">Historia</span>
@@ -61,7 +56,6 @@ export default function GameBoard() {
               ¿En qué año llegó Cristóbal Colón al continente americano?
             </h2>
 
-            {/* Opciones de respuesta */}
             <div
               className="gameboard__options"
               role="group"
@@ -89,7 +83,6 @@ export default function GameBoard() {
               </button>
             </div>
 
-            {/* Retroalimentación */}
             <footer className="gameboard__feedback" id="game-feedback" aria-live="polite">
               <div className="gameboard__feedback-info">
                 <p className="gameboard__feedback-text">
@@ -104,14 +97,14 @@ export default function GameBoard() {
                 type="button"
                 id="btn-next-question"
                 className="gameboard__button gameboard__button--next"
+                onClick={onFinishMatch}
               >
-                Siguiente Pregunta &rarr;
+                Siguiente Pregunta / Ver Resultados &rarr;
               </button>
             </footer>
           </div>
         </article>
 
-        {/* Sidebar Marcador en Vivo */}
         <aside className="gameboard__sidebar" aria-label="Marcador en tiempo real">
           <h3 className="gameboard__sidebar-title">Puntuaciones en Vivo</h3>
           <ul className="gameboard__scoreboard" id="game-live-scoreboard">

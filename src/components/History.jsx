@@ -3,7 +3,7 @@ import React from 'react';
 
 export default function History() {
   return (
-    <section id="view-history" className="history history--hidden" aria-labelledby="history-heading">
+    <section id="view-history" className="history" aria-labelledby="history-heading">
       <header className="history__header">
         <h2 id="history-heading" className="history__title">Historial de Partidas Finalizadas</h2>
         <button type="button" id="btn-refresh-history" className="history__button">

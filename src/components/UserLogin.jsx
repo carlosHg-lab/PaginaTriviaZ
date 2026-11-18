@@ -1,7 +1,15 @@
 // src/components/UserLogin.jsx
-import React from 'react';
+import React, { useState } from 'react';
 
-export default function UserLogin() {
+export default function UserLogin({ playerName, onLoginSuccess }) {
+  const [nameInput, setNameInput] = useState(playerName || '');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!nameInput.trim()) return;
+    onLoginSuccess(nameInput.trim());
+  };
+
   return (
     <section id="view-login" className="login" aria-labelledby="login-heading">
       <article className="login__card">
@@ -13,7 +21,7 @@ export default function UserLogin() {
           </p>
         </header>
 
-        <form className="login__form" id="form-user-login">
+        <form className="login__form" id="form-user-login" onSubmit={handleSubmit}>
           <div className="login__field">
             <label htmlFor="player-username" className="login__label">
               Tu Nombre de Jugador
@@ -25,6 +33,8 @@ export default function UserLogin() {
               className="login__input"
               placeholder="Ej. Carloz"
               maxLength={25}
+              value={nameInput}
+              onChange={(e) => setNameInput(e.target.value)}
               required
             />
           </div>
@@ -38,7 +48,7 @@ export default function UserLogin() {
           <div className="login__badge-group">
             <span className="login__badge-label">Estado de Sesión:</span>
             <output id="login-session-status" className="login__badge login__badge--pending">
-              Sin sala activa
+              {playerName ? `Activo como ${playerName}` : 'Sin sala activa'}
             </output>
           </div>
 
