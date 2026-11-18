@@ -1,122 +1,117 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+// src/App.jsx
+import React from 'react';
+import './App.css';
+import UserLogin from './components/UserLogin';
+import Menu from './components/Menu';
+import Lobby from './components/Lobby';
+import GameBoard from './components/GameBoard';
+import Results from './components/Results';
+import Practice from './components/Practice';
+import History from './components/History';
+import AdminPanel from './components/AdminPanel';
 
-function App() {
-  const [count, setCount] = useState(0)
-
+export default function App() {
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <div className="app">
+      {/* Overlay global para efecto de tensión inmersiva en pantalla completa cuando el tiempo expira */}
+      <div id="screen-fx" className="screen-fx"></div>
+
+      {/* CABECERA PRINCIPAL Y NAVEGACIÓN DE VISTAS (Bloque: navbar) */}
+      <header className="navbar">
+        <div className="navbar__brand">
+          <span className="navbar__logo" aria-hidden="true">
+            <img
+              src="sources/lightlogo.jpeg"
+              alt="Trivia Z Logo"
+              className="navbar__logo-img logo-variant--light"
+            />
+            <img
+              src="sources/nightlogo.jpeg"
+              alt="Trivia Z Logo"
+              className="navbar__logo-img logo-variant--dark"
+            />
+          </span>
+          <h1 className="navbar__title">
+            Trivia<span className="navbar__title--highlight">Z</span>
+          </h1>
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
+
+        <nav className="navbar__nav" aria-label="Navegación de componentes">
+          <ul className="navbar__list">
+            <li className="navbar__item">
+              <button type="button" className="navbar__link navbar__link--active" data-target="login">
+                Ingreso
+              </button>
+            </li>
+            <li className="navbar__item">
+              <button type="button" className="navbar__link" data-target="menu">
+                Inicio / Salas
+              </button>
+            </li>
+            <li className="navbar__item">
+              <button type="button" className="navbar__link" data-target="practice">
+                Práctica Libre
+              </button>
+            </li>
+            <li className="navbar__item">
+              <button type="button" className="navbar__link" data-target="history">
+                Historial Global
+              </button>
+            </li>
+            <li className="navbar__item">
+              <button type="button" className="navbar__link navbar__link--admin" data-target="admin">
+                Panel Admin
+              </button>
+            </li>
+            <li className="navbar__item">
+              <button
+                type="button"
+                id="btn-theme-toggle"
+                className="navbar__link"
+                aria-label="Cambiar entre modo claro y oscuro"
+              >
+                🌙 Modo Oscuro
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </header>
+
+      {/* CONTENEDOR PRINCIPAL DE VISTAS */}
+      <main className="app__main">
+        {/* Notificación global para errores de API: {"error": "mensaje"} (401, 403, 409) */}
+        <aside
+          className="alert alert--error alert--hidden"
+          role="alert"
+          aria-live="assertive"
+          id="api-alert"
         >
-          Count is {count}
-        </button>
-      </section>
+          <strong className="alert__status">
+            Error <span className="alert__code">409</span>:
+          </strong>
+          <p className="alert__message">Ya respondiste esta pregunta.</p>
+          <button type="button" className="alert__close" aria-label="Cerrar alerta">
+            &times;
+          </button>
+        </aside>
 
-      <div className="ticks"></div>
+        {/* Renderizado de Componentes */}
+        <UserLogin />
+        <Menu />
+        <Lobby />
+        <GameBoard />
+        <Results />
+        <Practice />
+        <History />
+        <AdminPanel />
+      </main>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      {/* PIE DE PÁGINA */}
+      <footer className="footer">
+        <p className="footer__text">
+          Trivia Z &bull; Conectado a <code className="footer__code">http://localhost:8080</code>
+        </p>
+      </footer>
+    </div>
+  );
 }
-
-export default App
