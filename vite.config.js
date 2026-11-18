@@ -1,12 +1,21 @@
-import react, { reactCompilerPreset } from '@vitejs/plugin-react'
-import babel from '@rolldown/plugin-babel'
-import { defineConfig } from 'vite'
+// vite.config.js
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
-// https://vite.dev/config/
 export default defineConfig({
+  plugins: [react()],
   base: '/PaginaTriviaZ/',
-  plugins: [
-    react(),
-    babel({ presets: [reactCompilerPreset()] })
-  ],
-})
+  server: {
+    proxy: {
+      '/api': {
+        // Si pruebas en local sin túnel, cambia esto a 'http://localhost:8080'
+        target: 'https://carlos-trivia-api.loca.lt',
+        changeOrigin: true,
+        secure: false,
+        headers: {
+          'bypass-tunnel-reminder': 'true'
+        }
+      }
+    }
+  }
+});

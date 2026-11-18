@@ -1,9 +1,17 @@
+// src/config/api.js
+import EventSourcePkg from "event-source-polyfill";
 
-import { EventSourcePolyfill } from "event-source-polyfill";
+const EventSourceImpl =
+    EventSourcePkg?.EventSourcePolyfill ||
+    EventSourcePkg?.default?.EventSourcePolyfill ||
+    globalThis.EventSourcePolyfill ||
+    globalThis.EventSource;
 
 // URL CENTRAL DEL BACKEND
 export const BASE_URL = "https://carlos-trivia-api.loca.lt";
 
+// En desarrollo pasa por el proxy de Vite para evitar bloqueos CORS
+const API_ORIGIN = import.meta.env.DEV ? window.location.origin : BASE_URL;
 
 // PETICIONES HTTP
 export const apiRequest = async (
@@ -15,7 +23,7 @@ export const apiRequest = async (
         adminKey = null
     } = {}
 ) => {
-    const url = new URL(endpoint, BASE_URL).toString();
+    const url = new URL(endpoint, API_ORIGIN).toString();
 
     const headers = {
         Accept: "application/json",
@@ -39,18 +47,18 @@ export const apiRequest = async (
         headers,
         body: body !== null ? JSON.stringify(body) : null
     });
+
     if (respuesta.status === 511) {
-    throw new Error(
-        "LocalTunnel rechazó la petición (511). Verifica la cabecera bypass-tunnel-reminder y que el túnel esté activo."
-    );
-}
+        throw new Error(
+            "LocalTunnel rechazó la petición (511). Verifica que el túnel esté activo."
+        );
+    }
 
     if (respuesta.status === 204) {
         return null;
     }
 
     const texto = await respuesta.text();
-
     let datos = null;
 
     if (texto) {
@@ -59,10 +67,9 @@ export const apiRequest = async (
         } catch {
             if (!respuesta.ok) {
                 throw new Error(
-                    `Error HTTP ${respuesta.status}: el servidor no devolvió JSON.`
+                    `Error HTTP ${respuesta.status}: el servidor o túnel no devolvió JSON.`
                 );
             }
-
             throw new Error("El servidor devolvió una respuesta inválida.");
         }
     }
@@ -80,9 +87,9 @@ export const apiRequest = async (
 
 // CONEXIÓN SSE GENÉRICA
 export const conectarSSE = (endpoint, alRecibirEstado) => {
-    const url = new URL(endpoint, BASE_URL).toString();
+    const url = new URL(endpoint, API_ORIGIN).toString();
 
-    const origen = new EventSourcePolyfill(url, {
+    const origen = new EventSourceImpl(url, {
         headers: {
             Accept: "text/event-stream",
             "bypass-tunnel-reminder": "true"
