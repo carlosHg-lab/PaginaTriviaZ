@@ -120,12 +120,12 @@ export default function App() {
         <div className="navbar__brand">
           <span className="navbar__logo" aria-hidden="true">
             <img
-              src="sources/lightlogo.jpeg"
+              src="src/assets/lightlogo.jpeg"
               alt="Trivia Z Logo"
               className="navbar__logo-img logo-variant--light"
             />
             <img
-              src="sources/nightlogo.jpeg"
+              src="src/assets/nightlogo.jpeg"
               alt="Trivia Z Logo"
               className="navbar__logo-img logo-variant--dark"
             />
