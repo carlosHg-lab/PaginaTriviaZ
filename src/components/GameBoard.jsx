@@ -39,19 +39,25 @@ export default function GameBoard({
     onErrorRef.current = onError;
   }, [onUpdatePartida, onFinishMatch, onError]);
 
-  const lastQuestionIndexRef = useRef(null);
+  const lastQuestionNumRef = useRef(null);
   const lastVersionRef = useRef(partida?.version ?? -1);
 
   const isIndividual = partida?.tipo === 'INDIVIDUAL';
   const isTurnBased = partida?.modalidad === 'POR_TURNOS';
   const isHost = session?.jugadorId === partida?.anfitrionId;
-  const currentIdx = partida?.preguntaActual ?? 0;
+
+  // El backend maneja preguntaActual en base 1 (1, 2, 3...)
   const totalQuestions = partida?.totalPreguntas || 1;
-  const displayNumber = Math.min(currentIdx + 1, totalQuestions);
+  const currentNum =
+    typeof partida?.preguntaActual === 'number' && partida.preguntaActual >= 1
+      ? partida.preguntaActual
+      : 1;
+  const currentZeroIdx = currentNum - 1;
+  const displayNumber = Math.min(currentNum, totalQuestions);
   const remainingCards = Math.max(totalQuestions - displayNumber, 0);
 
   const fetchCurrentQuestion = useCallback(
-    async (qIndex) => {
+    async (qNum) => {
       if (!partida?.id) return;
       try {
         setCardAnimClass('gameboard__card-flipper--exit');
@@ -67,7 +73,7 @@ export default function GameBoard({
           setSecondsLeft(data.segundosRestantes);
         }
 
-        lastQuestionIndexRef.current = qIndex;
+        lastQuestionNumRef.current = qNum;
         requestAnimationFrame(() => {
           setCardAnimClass('gameboard__card-flipper--enter');
         });
@@ -99,16 +105,20 @@ export default function GameBoard({
         return;
       }
 
+      const newNum =
+        typeof nuevoEstado.preguntaActual === 'number' && nuevoEstado.preguntaActual >= 1
+          ? nuevoEstado.preguntaActual
+          : 1;
+      const newZeroIdx = newNum - 1;
+
       if (nuevoEstado.preguntaCerrada) {
-        const idx = nuevoEstado.preguntaActual ?? 0;
         setDeckHistory((prev) =>
-          prev[idx] ? prev : { ...prev, [idx]: 'unanswered' }
+          prev[newZeroIdx] ? prev : { ...prev, [newZeroIdx]: 'unanswered' }
         );
       }
 
-      const newIdx = nuevoEstado.preguntaActual ?? 0;
-      if (lastQuestionIndexRef.current !== newIdx) {
-        fetchCurrentQuestion(newIdx);
+      if (lastQuestionNumRef.current !== newNum) {
+        fetchCurrentQuestion(newNum);
       }
     },
     [fetchCurrentQuestion]
@@ -119,7 +129,11 @@ export default function GameBoard({
     if (!partida?.id) return;
     let active = true;
 
-    fetchCurrentQuestion(partida.preguntaActual ?? 0);
+    const initialNum =
+      typeof partida.preguntaActual === 'number' && partida.preguntaActual >= 1
+        ? partida.preguntaActual
+        : 1;
+    fetchCurrentQuestion(initialNum);
 
     if (isIndividual) {
       return () => {
@@ -160,7 +174,7 @@ export default function GameBoard({
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [isIndividual, partida?.preguntaCerrada, partida?.estado, currentIdx]);
+  }, [isIndividual, partida?.preguntaCerrada, partida?.estado, currentNum]);
 
   // Efecto de tensión cuando quedan <= 5 segundos
   useEffect(() => {
@@ -205,7 +219,7 @@ export default function GameBoard({
 
       setDeckHistory((prev) => ({
         ...prev,
-        [currentIdx]: res.correcta ? 'correct' : 'wrong'
+        [currentZeroIdx]: res.correcta ? 'correct' : 'wrong'
       }));
 
       if (onUpdatePartidaRef.current) {
@@ -322,7 +336,7 @@ export default function GameBoard({
               {Array.from({ length: totalQuestions }).map((_, idx) => {
                 const status = deckHistory[idx];
                 let slotClass = 'deck-slot';
-                if (idx === currentIdx && !status) {
+                if (idx === currentZeroIdx && !status) {
                   slotClass += ' deck-slot--current';
                 } else if (status === 'correct') {
                   slotClass += ' deck-slot--correct';
