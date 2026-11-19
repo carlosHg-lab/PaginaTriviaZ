@@ -8,7 +8,7 @@ const EventSourceImpl =
     globalThis.EventSource;
 
 // URL CENTRAL DEL BACKEND
-export const BASE_URL = "https://carlos-trivia-api.loca.lt";
+export const BASE_URL = "https://stamps-brandon-cookbook-wesley.trycloudflare.com";
 
 // En desarrollo pasa por el proxy de Vite para evitar bloqueos CORS
 const API_ORIGIN = import.meta.env.DEV ? window.location.origin : BASE_URL;
