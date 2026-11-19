@@ -9,7 +9,7 @@ export default defineConfig({
     proxy: {
       '/api': {
         // Si pruebas en local sin túnel, cambia esto a 'http://localhost:8080'
-        target: 'https://stamps-brandon-cookbook-wesley.trycloudflare.com',
+        target: 'https://residential-concentrations-determined-witnesses.trycloudflare.com ',
         changeOrigin: true,
         secure: false,
         headers: {
