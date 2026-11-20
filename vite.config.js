@@ -9,7 +9,7 @@ export default defineConfig({
     proxy: {
       '/api': {
         // Si pruebas en local sin túnel, cambia esto a 'http://localhost:8080'
-        target: 'https://residential-concentrations-determined-witnesses.trycloudflare.com ',
+        target: 'https://sandbar-finer-litter.ngrok-free.dev',
         changeOrigin: true,
         secure: false,
         headers: {
