@@ -7,7 +7,6 @@ import Menu from './components/Menu';
 import Lobby from './components/Lobby';
 import GameBoard from './components/GameBoard';
 import Results from './components/Results';
-import Practice from './components/Practice';
 import History from './components/History';
 import AdminPanel from './components/AdminPanel';
 
@@ -165,18 +164,6 @@ export default function App() {
                 <li className="navbar__item">
                   <button
                     type="button"
-                    className={`navbar__link ${currentView === 'practice' ? 'navbar__link--active' : ''}`}
-                    onClick={() => {
-                      clearError();
-                      setCurrentView('practice');
-                    }}
-                  >
-                    Práctica Libre
-                  </button>
-                </li>
-                <li className="navbar__item">
-                  <button
-                    type="button"
                     className={`navbar__link ${currentView === 'history' ? 'navbar__link--active' : ''}`}
                     onClick={() => {
                       clearError();
@@ -283,7 +270,6 @@ export default function App() {
               />
             )}
 
-            {currentView === 'practice' && <Practice onError={showError} />}
 
             {currentView === 'history' && <History onError={showError} />}
 
