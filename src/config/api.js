@@ -25,8 +25,10 @@ export const apiRequest = async (
 ) => {
     const url = new URL(endpoint, API_ORIGIN).toString();
 
+    // En apiRequest -> headers:
     const headers = {
         Accept: "application/json",
+        "ngrok-skip-browser-warning": "true",
         "bypass-tunnel-reminder": "true"
     };
 
@@ -89,9 +91,11 @@ export const apiRequest = async (
 export const conectarSSE = (endpoint, alRecibirEstado) => {
     const url = new URL(endpoint, API_ORIGIN).toString();
 
+    // En conectarSSE -> EventSourceImpl opciones:
     const origen = new EventSourceImpl(url, {
         headers: {
             Accept: "text/event-stream",
+            "ngrok-skip-browser-warning": "true",
             "bypass-tunnel-reminder": "true"
         },
         heartbeatTimeout: 120000
